@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<link rel="stylesheet" href="css/styles.css"/>
+		<title>chatApp - Node.js</title>
+		<script defer src="http://localhost:8124/socket.io/socket.io.js"></script>
+		<script defer src="js/client.js"></script>
+	</head>
+	<body class="main-body">
+		<div id="msg-container">
+			Hi, welcome to the chat app! Please continue by setting your name.<br/>
+			/setname [your_name]<br/>
+			Example : /setname Akshay<br/>
+		</div>
+		<br/>
+		<div id="send-container">
+			<form id="send-form">
+				<input id="input-msg" type="text" autocomplete="off" placeholder="Type in a message.."/>
+				<button type="submit" id="send-button">Send</button>
+			</form>
+		</div>
+	</body>
+</html>
