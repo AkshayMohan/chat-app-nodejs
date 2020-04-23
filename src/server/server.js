@@ -8,12 +8,13 @@ io.on('connection', (socket) => {
 	//on(event, data) //from an event.
 	socket.on('onClientText', (msg) => {
 
-		console.log(msg);
+		console.log('Message : ' + msg);
 	});
 	socket.on('onClientCommand', onClientCommand);
 });
 
-function onClientCommand(cmd) {
+function onClientCommand(cmd, params) {
 
-	console.log('Command : ' + cmd);
+	//params === null if no parameters were given.
+	console.log('Command : ' + cmd + ' Parameters : ' + params);
 }
