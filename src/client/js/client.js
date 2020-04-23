@@ -15,8 +15,14 @@ sendForm.addEventListener('submit', (event) => {
 	event.preventDefault(); //By default, submit refreshes and that must be avoided.
 	if(message.charAt(0) == '/') {
 
-		//Client has typed a command.
-		socket.emit('onClientCommand', message);
+		/*
+			Client has entered a command.
+			Split the message to 2 parts - cmd and params.
+			cmd - the command as a string.
+			params - array of parameters.
+		*/
+		const cmdData = message.split(/ (.+)/);
+		socket.emit('onClientCommand', cmdData[0], cmdData[1]);
 	} else {
 
 		socket.emit('onClientText', message);
