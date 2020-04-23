@@ -17,11 +17,23 @@ html, body {
 	box-sizing: border-box;
 	background-color: #2d0922;
 
-	overflow: auto;
+	overflow-y: auto;
+	overflow-x: hidden;
 	scrollbar-color: #c9613f black;
 	scrollbar-width: thin;
 
 	padding-left: 0.5%;
 	font-family: monospace;
 	color: white;
+}
+
+#msg-container > span {
+
+	display: block;
+	overflow-wrap: break-word;
+}
+
+#input-msg {
+
+	width: 80%;
 }
