@@ -1,12 +1,21 @@
 const socket		=	io('localhost:8124');
 const sendForm		=	document.getElementById('send-form');
 const inputMsg		=	document.getElementById('input-msg');
+const MsgContainer	=	document.getElementById('msg-container');
 
 
+function messageClient(message) {
 
-socket.on('server-event', (data) => { //Message from server.
+	const messageSpan = document.createElement('span');
+	messageSpan.textContent = message;
+	MsgContainer.appendChild(messageSpan);
+	MsgContainer.scrollTop = MsgContainer.scrollHeight; //So that user doesn't have to scroll down manually.
+	//#TODO : Do not scroll down automatically from previous messages if client is reading previous messages.
+}
 
-	console.log(data);
+socket.on('server-message', (msg) => {
+
+	messageClient(msg);
 });
 
 sendForm.addEventListener('submit', (event) => {
@@ -25,7 +34,10 @@ sendForm.addEventListener('submit', (event) => {
 		socket.emit('onClientCommand', cmdData[0], cmdData[1]);
 	} else {
 
+		messageClient('You: ' + message);
 		socket.emit('onClientText', message);
 	}
 	inputMsg.value = ''; //So that the textfield is cleared after pressing 'Send'.
 });
+
+inputMsg.focus(); //Set focus to input field whenever the page is loaded.
