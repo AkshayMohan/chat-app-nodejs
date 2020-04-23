@@ -4,6 +4,7 @@
   "description": "[WIP] Real-time browser based chat app using Node.js",
   "main": "index.js",
   "scripts": {
+    "start": "node src/server/server.js",
     "devStart": "nodemon src/server/server.js"
   },
   "author": "Akshay Mohan",
