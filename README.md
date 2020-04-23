@@ -22,4 +22,4 @@ git clone https://github.com/AkshayMohan/chat-app-nodejs
 - Use `npm run devStart` to start the application in dev-mode. Changes to any file with js, mjs or json extension will automatically restart the server.
 
 ## Using
-- Once the back-end is up and running, run `src/client/index.html` on a browser to run the client-side.
+- Once the back-end is up and running, run `src/client/index.html` on a browser to run the client-side. Multiple tabs can be spawned to test it's working.
