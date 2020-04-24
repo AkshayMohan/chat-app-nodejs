@@ -1,6 +1,6 @@
 const io = require('socket.io')(8124);
 
-const client_names = {}
+const clientNames = {}
 
 io.on('connection', (socket) => {
 
@@ -19,13 +19,14 @@ io.on('connection', (socket) => {
 
 function onClientText(socket, msg) {
 
-	if(typeof client_names[socket.id] !== 'string') {
+	if(typeof clientNames[socket.id] !== 'string') {
 
 		socket.emit('server-message', 'ERROR : Message not sent. You must join the chat first! (/join)');
 		return;
 	} else {
 		//#TODO : Broadcast chats only to 'joined' clients.
-		socket.broadcast.emit('server-message', `${client_names[socket.id]}: ${msg}`);
+		socket.broadcast.emit('chat-message', 
+			{name: clientNames[socket.id], color: 'green', bgCol: 'black'}, msg);
 	}
 }
 
@@ -37,7 +38,7 @@ function onClientCommand(socket, cmd, params) {
 	//#TODO : commands.js.
 
 	if(cmd === '/join') {
-		if(typeof client_names[socket.id] === 'string') {
+		if(typeof clientNames[socket.id] === 'string') {
 
 			socket.emit('server-message', 'ERROR : You are already joined with a nickname!');
 			return;
@@ -47,8 +48,10 @@ function onClientCommand(socket, cmd, params) {
 			socket.emit('server-message', 'USAGE : /join [nickname]');
 		} else {
 
-			client_names[socket.id] = params;
+			clientNames[socket.id] = params;
 			socket.emit('server-message', 'Your nickname is now ' + params);
+
+			//Broadcast messages are sent to everyone except the client.
 			socket.broadcast.emit('server-message', params + ' has joined the chat!');
 		}
 	}
