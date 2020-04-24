@@ -4,14 +4,28 @@ const inputMsg		=	document.getElementById('input-msg');
 const MsgContainer	=	document.getElementById('msg-container');
 
 
-function messageClient(message) {
+function messageClient(message, fromUser = null) {
 
 	const messageSpan = document.createElement('span');
-	messageSpan.textContent = message;
+	if(fromUser !== null) {
+
+		const clientNameSpan			=	document.createElement('span');
+		clientNameSpan.style.color		=	fromUser.color;
+		clientNameSpan.style.background	=	fromUser.bgCol;
+		clientNameSpan.textContent		=	fromUser.name + ':';
+
+		messageSpan.appendChild(clientNameSpan);
+	}
+	messageSpan.innerHTML += ' ' + message;
 	MsgContainer.appendChild(messageSpan);
 	MsgContainer.scrollTop = MsgContainer.scrollHeight; //So that user doesn't have to scroll down manually.
 	//#TODO : Do not scroll down automatically from previous messages if client is reading previous messages.
 }
+
+socket.on('chat-message', (fromUser, msg) => {
+
+	messageClient(msg, fromUser);
+});
 
 socket.on('server-message', (msg) => {
 
@@ -34,7 +48,7 @@ sendForm.addEventListener('submit', (event) => {
 		socket.emit('onClientCommand', cmdData[0], cmdData[1]);
 	} else {
 
-		messageClient('You: ' + message);
+		messageClient(message, {name: 'You', color: 'orange', bgCol: 'black'});
 		socket.emit('onClientText', message);
 	}
 	inputMsg.value = ''; //So that the textfield is cleared after pressing 'Send'.
