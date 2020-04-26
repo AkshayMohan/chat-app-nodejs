@@ -9,10 +9,13 @@ function messageClient(message, fromUser = null) {
 	const messageSpan = document.createElement('span');
 	if(fromUser !== null) {
 
+		//#TODO : CSS would be better to make it easier to change themes.
+		// or a list/arr supporting different themes.
 		const clientNameSpan			=	document.createElement('span');
 		clientNameSpan.style.color		=	fromUser.color;
 		clientNameSpan.style.background	=	fromUser.bgCol;
 		clientNameSpan.textContent		=	fromUser.name + ':';
+		clientNameSpan.style.fontWeight	=	'bold';
 
 		messageSpan.appendChild(clientNameSpan);
 	}
