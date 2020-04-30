@@ -7,7 +7,7 @@ A real-time browser based chat app that's currently being developed using Node.j
 ## Installation
 1. Clone this repository using `git`:
 ```bash
-git clone https://github.com/AkshayMohan/chat-app-nodejs
+git clone https://github.com/AkshayMohan/chat-app-nodejs.git
 ```
 
 2. Navigate to the repository using `cd chat-app-nodejs`
