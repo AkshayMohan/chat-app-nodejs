@@ -1,11 +1,16 @@
-const io = require('socket.io')(8124);
+const io				=	require('socket.io')(8124);
+const clientCommands	=	require('./commands.js');
+const Client			=	require('./client.js');
 
-const clientNames = {}
+const clients = {}; //`Client` object for each clients[socket.id] upon connecting.
 
 io.on('connection', (socket) => {
 
 	//emit(event, data) //to an event.
 	//on(event, data) //from an event.
+
+	clients[socket.id] = new Client();
+	console.log(`[DEBUG] socket (${socket.id}) has joined!`);
 
 	socket.on('onClientText', (msg) => {
 
@@ -17,9 +22,10 @@ io.on('connection', (socket) => {
 	});
 	socket.on('disconnect', () => {
 
-		console.log('[DEBUG] Client has been disconnected!');
+		delete clients[socket.id];
+		console.log(`[DEBUG] socket (${socket.id}) has disconnected!`);
 		/*
-			rooms are left upon disconnection when I tested
+			rooms are left upon disconnecting when I tested
 			but until further assured, let it be here.
 		*/
 		socket.leave('chat-room');
@@ -28,14 +34,14 @@ io.on('connection', (socket) => {
 
 function onClientText(socket, msg) {
 
-	if(typeof clientNames[socket.id] !== 'string') {
+	if(typeof clients[socket.id].clientName !== 'string') {
 
 		socket.emit('server-message', 'ERROR : Message not sent. You must join the chat first! (/join)');
 		return;
 	} else {
 
 		socket.broadcast.to('chat-room').emit('chat-message', 
-			{name: clientNames[socket.id], color: 'green', bgCol: 'black'}, msg);
+			{name: clients[socket.id].clientName, color: 'green', bgCol: 'black'}, msg);
 	}
 }
 
@@ -44,27 +50,12 @@ function onClientCommand(socket, cmd, params) {
 	//params === null if no parameters were given.
 	console.log(`[DEBUG] Command : ${cmd} Parameters : ${params}`);
 
-	//#TODO : commands.js.
+	if(cmd in clientCommands) {
 
-	if(cmd === '/join') {
-		
-		if(typeof clientNames[socket.id] === 'string') {
+		//client object of corresponding socket.id is sent as arg along with socket and cmd parameters.
+		clientCommands[cmd](clients[socket.id], socket, params); //invoke command imported from commands.js
+	} else {
 
-			socket.emit('server-message', 'ERROR : You are already joined with a nickname!');
-			return;
-		}
-		if(params === null) {
-
-			socket.emit('server-message', 'USAGE : /join [nickname]');
-		} else {
-
-			clientNames[socket.id] = params;
-			socket.join('chat-room');
-
-			socket.emit('server-message', 'Your nickname is now ' + params);
-
-			//Broadcast messages are sent to everyone except the client.
-			socket.broadcast.to('chat-room').emit('server-message', params + ' has joined the chat!');
-		}
+		socket.emit('server-message', 'ERROR : This command does not exist.');
 	}
 }
