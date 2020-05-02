@@ -53,7 +53,7 @@ function onClientCommand(socket, cmd, params) {
 	if(cmd in clientCommands) {
 
 		//client object of corresponding socket.id is sent as arg along with socket and cmd parameters.
-		clientCommands[cmd](clients[socket.id], socket, params); //invoke command imported from commands.js
+		clientCommands[cmd].execute(clients[socket.id], socket, params); //invoke command imported from commands.js
 	} else {
 
 		socket.emit('server-message', 'ERROR : This command does not exist.');
