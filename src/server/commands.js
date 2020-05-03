@@ -11,6 +11,12 @@ const clientCommands = {
 		execute:		cmd_help,
 		syntax:			'/help [cmd]',
 		description:	'Displays description of an existing command.'
+	},
+	'/clients': {
+
+		execute:		cmd_clients,
+		syntax:			'/clients',
+		description:	'Displays the number of clients joined.'
 	}
 }
 
@@ -56,4 +62,10 @@ function cmd_help(client, socket, params) {
 	}
 	return 0;
 }
+
+function cmd_clients(client, socket, params) {
+
+	//#TODO.
+}
+
 module.exports = clientCommands;
