@@ -6,3 +6,5 @@ class Message {
         this.message = message;
     }
 }
+
+module.exports = Message;
