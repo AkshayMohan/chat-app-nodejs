@@ -1,6 +1,7 @@
 const io				=	require('socket.io')(8124);
 const clientCommands	=	require('./commands.js');
 const Client			=	require('./client.js');
+const Message			=	require('./message.js');
 
 const clients = {}; //`Client` object for each clients[socket.id] upon connecting.
 
